@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using workshop.wwwapi.DTO;
+using workshop.wwwapi.Models;
 using workshop.wwwapi.Repository;
 
 namespace workshop.wwwapi.Endpoints
@@ -13,16 +15,17 @@ namespace workshop.wwwapi.Endpoints
             var surgeryGroup = app.MapGroup("surgery");
 
             surgeryGroup.MapGet("/patients", GetPatients);
-            surgeryGroup.MapGet("/doctors", GetDoctors);
-            surgeryGroup.MapGet("/appointmentsbydoctor/{id}", GetAppointmentsByDoctor);
+            //surgeryGroup.MapGet("/doctors", GetDoctors);
+            //surgeryGroup.MapGet("/appointmentsbydoctor/{id}", GetAppointmentsByDoctor);
             surgeryGroup.MapGet("/patients/{id}", GetPatientById);
         }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetPatients(IRepository repository, IMapper mapper)
+        public static async Task<IResult> GetPatients(IRepository<Patient> patientRepository, IMapper mapper)
         {
             try
             {
-                var patients = await repository.GetPatients();
+                var patients = await patientRepository.GetAll();
 
                 var response = mapper.Map<List<PatientDTO>>(patients);
 
@@ -34,24 +37,14 @@ namespace workshop.wwwapi.Endpoints
             }
             
         }
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetDoctors(IRepository repository)
-        {
-            return TypedResults.Ok(await repository.GetPatients());
-        }
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetAppointmentsByDoctor(IRepository repository, int id)
-        {
-            return TypedResults.Ok(await repository.GetAppointmentsByDoctor(id));
-        }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> GetPatientById(IRepository repository, IMapper mapper, int id)
+        public static async Task<IResult> GetPatientById(IRepository<Patient> patientRepository, IMapper mapper, int id)
         {
             try
             {
-                var patient = await repository.GetPatientById(id);
+                var patient = await patientRepository.GetById(id);
 
                 if (patient == null)
                     return TypedResults.NotFound("Patient not found.");
@@ -65,5 +58,17 @@ namespace workshop.wwwapi.Endpoints
                 return TypedResults.Problem(ex.Message);
             }
         }
+
+        /*[ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetDoctors(IRepository<Doctor> doctorRepository)
+        {
+            return TypedResults.Ok(1);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetAppointmentsByDoctor(IRepository<Doctor> doctorRepository, int id)
+        {
+            return TypedResults.Ok(1);
+        }*/
     }
 }
