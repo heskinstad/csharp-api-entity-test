@@ -9,6 +9,8 @@ namespace workshop.wwwapi.Mapper
         public MappingProfile()
         {
             CreateMap<Patient, PatientDTO>();
+            CreateMap<Doctor, DoctorDTO>();
+            CreateMap<Appointment, AppointmentDTO>();
         }
     }
 }
