@@ -21,11 +21,11 @@ namespace workshop.wwwapi.Endpoints
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public static async Task<IResult> GetPatients(IRepository<Patient> patientRepository, IMapper mapper)
+        public static async Task<IResult> GetPatients(IRepository repository, IMapper mapper)
         {
             try
             {
-                var patients = await patientRepository.GetAll();
+                var patients = await repository.GetPatients();
 
                 var response = mapper.Map<List<PatientDTO>>(patients);
 
@@ -40,11 +40,11 @@ namespace workshop.wwwapi.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> GetPatientById(IRepository<Patient> patientRepository, IMapper mapper, int id)
+        public static async Task<IResult> GetPatientById(IRepository repository, IMapper mapper, int id)
         {
             try
             {
-                var patient = await patientRepository.GetById(id);
+                var patient = await repository.GetPatientById(id);
 
                 if (patient == null)
                     return TypedResults.NotFound("Patient not found.");

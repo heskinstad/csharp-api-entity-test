@@ -2,12 +2,14 @@
 
 namespace workshop.wwwapi.Repository
 {
-    public interface IRepository<T>
+    public interface IRepository
     {
-        Task<IEnumerable<T>> GetAll();
-        Task<T> Add(T entity);
-        Task<T> Update(T entity);
-        Task<T> Delete(object id);
-        Task<T> GetById(int id);
+        Task<IEnumerable<Patient>> GetPatients();
+        Task<IEnumerable<Doctor>> GetDoctors();
+        Task<IEnumerable<Appointment>> GetAppointmentsByDoctor(int id);
+
+        Task<Patient> GetPatientById(int id);
+
+
     }
 }
