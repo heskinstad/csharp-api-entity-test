@@ -13,7 +13,6 @@ namespace workshop.wwwapi.Data
         {
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             _connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnectionString")!;
-            this.Database.EnsureCreated();
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,8 +46,8 @@ namespace workshop.wwwapi.Data
                 new Appointment() { Booking = DateTime.UtcNow.AddDays(2), DoctorId = 1, PatientId = 2 },
                 new Appointment() { Booking = DateTime.UtcNow.AddDays(3), DoctorId = 2, PatientId = 1 }
                 );
-
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.UseInMemoryDatabase(databaseName: "Database");
@@ -58,7 +57,6 @@ namespace workshop.wwwapi.Data
             optionsBuilder.ConfigureWarnings(warnings =>
                 warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
         }
-
 
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }

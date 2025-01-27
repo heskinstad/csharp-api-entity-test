@@ -7,6 +7,8 @@ namespace workshop.wwwapi.DTO
     {
         public DateTime Booking { get; set; }
         public int DoctorId { get; set; }
+        public string DoctorFullName { get; set; }
         public int PatientId { get; set; }
+        public string PatientFullName { get; set; }
     }
 }
