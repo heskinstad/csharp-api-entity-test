@@ -30,7 +30,7 @@ namespace workshop.wwwapi.Data
                 .WithMany(p => p.Appointments)
                 .HasForeignKey(a => a.DoctorId);
 
-            //TODO: Seed Data Here
+
             modelBuilder.Entity<Patient>().HasData(
                 new Patient() { Id = 1, FullName = "Tom" },
                 new Patient() { Id = 2, FullName = "Jerry" }
